@@ -150,7 +150,7 @@ function renderNotes() {
     
     els.notesGrid.innerHTML = '';
     if (filtered.length === 0) {
-        els.notesGrid.innerHTML = '<div class="small">No notes</div>';
+        els.notesGrid.innerHTML = '<div class="small">You\'re all up to date!</div>';
     } else {
         filtered.forEach(renderNoteCard);
     }
