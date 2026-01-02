@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Pharmacy Handover System</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <div class="brand">
+      <div class="logo">PHS</div>
+      <div>
+        <h1>Pharmacy Handover System</h1>
+        <div class="subtitle">Pharmacy-focused digital handover</div>
+      </div>
+    </div>
+    <div>
+      <button id="exportBtn" class="btn ghost">Export JSON</button>
+      <button id="importBtn" class="btn ghost">Import JSON</button>
+      <input type="file" id="importFile" accept="application/json">
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="grid">
+      <aside class="card sidebar">
+        <div class="profile">
+          <div class="avatar" id="avatar">U</div>
+          <div>
+            <div id="userName">Guest</div>
+            <div class="small" id="userRole">No role selected</div>
+          </div>
+        </div>
+
+        <label>Role</label>
+        <select id="roleSelect">
+          <option value="guest">Select role</option>
+          <option value="pharmacist">Pharmacist</option>
+          <option value="technician">Technician</option>
+          <option value="dispenser">Dispenser</option>
+          <option value="manager">Manager</option>
+        </select>
+
+        <label>Display name</label>
+        <input type="text" id="displayName" placeholder="e.g. Sarah Smith">
+
+        <label>GPhC number (optional)</label>
+        <input type="text" id="gphc" placeholder="e.g. 2087654">
+
+        <div class="profile-actions">
+          <button id="saveProfile" class="btn">Save</button>
+          <button id="clearProfile" class="btn ghost">Reset</button>
+        </div>
+
+        <div class="filters">
+          <label>Filter by status</label>
+          <select id="statusFilter">
+            <option value="all">All</option>
+            <option value="active">Active</option>
+            <option value="completed">Completed</option>
+          </select>
+
+          <label>Filter by priority</label>
+          <select id="priorityFilter">
+            <option value="all">All</option>
+            <option value="low">Low</option>
+            <option value="medium">Medium</option>
+            <option value="high">High</option>
+          </select>
+
+          <label>Category</label>
+          <select id="categoryFilter">
+            <option value="all">All</option>
+            <option>Prescription Follow-up</option>
+            <option>Delivery</option>
+            <option>Stock</option>
+            <option>Service</option>
+            <option>Admin</option>
+            <option>Other</option>
+          </select>
+
+          <div class="note-count">Notes: <span id="noteCount">0</span></div>
+        </div>
+
+        <hr>
+        <div>
+          <div class="log-header">
+            <div class="small">Audit Log</div>
+            <button id="clearLog" class="btn ghost">Clear</button>
+          </div>
+          <div class="log-list" id="auditLog"></div>
+        </div>
+      </aside>
+
+      <section>
+        <div class="card topbar">
+          <div class="search">
+            <input id="searchInput" placeholder="Search notes or patient ref...">
+            <div class="small">Showing: <span id="showing">all</span></div>
+          </div>
+          <div class="actions">
+            <button id="createNoteBtn" class="btn">+ Create Note</button>
+            <button id="clearAllBtn" class="btn ghost">Clear Notes</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="notes" id="notesGrid"></div>
+        </div>
+      </section>
+    </div>
+
+    <div class="modal-backdrop" id="modalBackdrop">
+      <div class="modal" role="dialog" aria-modal="true">
+        <h3 id="modalTitle">Create Note</h3>
+        <div class="modal-content">
+          <label>Category</label>
+          <select id="noteCategory">
+            <option>Prescription Follow-up</option>
+            <option>Delivery</option>
+            <option>Stock</option>
+            <option>Service</option>
+            <option>Admin</option>
+            <option>Other</option>
+          </select>
+          <div class="row">
+            <div class="col">
+              <label>Priority</label>
+              <select id="notePriority">
+                <option value="low">Low</option>
+                <option value="medium">Medium</option>
+                <option value="high">High</option>
+              </select>
+            </div>
+            <div class="col">
+              <label>Patient ref / Rx ID (optional)</label>
+              <input type="text" id="notePatientRef" placeholder="e.g. ABC123">
+            </div>
+          </div>
+
+          <label>Message</label>
+          <textarea id="noteMessage"></textarea>
+
+          <div class="modal-actions">
+            <button id="saveNote" class="btn">Save</button>
+            <button id="cancelNote" class="btn ghost">Cancel</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>

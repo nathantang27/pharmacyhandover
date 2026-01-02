@@ -1,0 +1,258 @@
+:root {
+  --bg: #f5f7fb;
+  --card: #ffffff;
+  --muted: #6b7280;
+  --accent: #0f172a;
+  --success: #0f9d58;
+  --danger: #dc2626;
+  --primary: #2563eb;
+  --glass: rgba(255, 255, 255, 0.6);
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+}
+
+* { box-sizing: border-box; margin: 0; }
+
+body {
+  background: linear-gradient(180deg, #eef2ff 0%, var(--bg) 100%);
+  color: #0b1220;
+  min-height: 100vh;
+}
+
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 24px;
+  background: transparent;
+}
+
+.brand {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.logo {
+  width: 48px;
+  height: 48px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, var(--primary), #7c3aed);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 700;
+}
+
+h1 { font-size: 18px; margin: 0; }
+.subtitle { font-size: 12px; color: var(--muted); }
+
+.container {
+  max-width: 1100px;
+  margin: 22px auto;
+  padding: 18px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 18px;
+}
+
+.card {
+  background: var(--card);
+  border-radius: 12px;
+  padding: 14px;
+  box-shadow: 0 6px 18px rgba(16, 24, 40, 0.06);
+}
+
+/* Sidebar */
+.profile {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 8px;
+  background: linear-gradient(45deg, #444, #222);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+label {
+  display: block;
+  font-size: 13px;
+  margin-top: 10px;
+  color: var(--muted);
+}
+
+select, input[type="text"] {
+  width: 100%;
+  padding: 8px;
+  border-radius: 8px;
+  border: 1px solid #e6e9ef;
+  margin-top: 6px;
+}
+
+.btn {
+  display: inline-block;
+  padding: 8px 12px;
+  border-radius: 10px;
+  border: none;
+  background: var(--primary);
+  color: white;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.btn.ghost {
+  background: transparent;
+  border: 1px solid #e6e9ef;
+  color: var(--accent);
+}
+
+.profile-actions {
+  margin-top: 12px;
+  display: flex;
+  gap: 8px;
+}
+
+.filters { margin-top: 12px; }
+.note-count { font-weight: 600; margin-top: 10px; }
+
+hr {
+  margin: 12px 0;
+  border: none;
+  border-top: 1px solid #eef2ff;
+}
+
+.log-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.log-list {
+  max-height: 260px;
+  overflow: auto;
+  padding: 6px;
+  border-radius: 8px;
+  border: 1px dashed #eef2ff;
+  margin-top: 8px;
+}
+
+/* Main area */
+.topbar {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.search {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.search input {
+  padding: 8px 10px;
+  border-radius: 10px;
+  border: 1px solid #e6e9ef;
+  width: 320px;
+}
+
+.actions { display: flex; gap: 8px; }
+
+.notes {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 12px;
+}
+
+.note {
+  border-radius: 10px;
+  padding: 10px;
+  background: linear-gradient(180deg, var(--glass), #fff);
+  border: 1px solid rgba(15, 23, 42, 0.04);
+}
+
+.note .meta {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  align-items: center;
+}
+
+.badge {
+  padding: 4px 8px;
+  border-radius: 999px;
+  font-size: 12px;
+}
+
+.badge.low { background: #ecfccb; color: #365314; }
+.badge.med { background: #fff7ed; color: #92400e; }
+.badge.high { background: #fee2e2; color: #991b1b; }
+
+.note p { margin: 8px 0 6px; }
+.note .controls { display: flex; gap: 6px; }
+.small { font-size: 12px; color: var(--muted); }
+
+/* Modal */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(11, 17, 32, 0.45);
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal {
+  width: 420px;
+  background: var(--card);
+  padding: 16px;
+  border-radius: 12px;
+}
+
+.modal-content { margin-top: 8px; }
+
+.row {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.row .col { flex: 1; }
+
+textarea {
+  width: 100%;
+  height: 110px;
+  padding: 8px;
+  border-radius: 8px;
+  border: 1px solid #e6e9ef;
+  margin-top: 6px;
+  resize: vertical;
+}
+
+.modal-actions {
+  margin-top: 10px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+/* Import file */
+#importFile { display: none; }
+
+@media (max-width: 900px) {
+  .grid { grid-template-columns: 1fr; }
+  .search input { width: 160px; }
+}
