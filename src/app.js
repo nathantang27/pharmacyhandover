@@ -3,14 +3,16 @@ let notes = JSON.parse(localStorage.getItem('tna_notes_v1') || '[]');
 let audit = JSON.parse(localStorage.getItem('tna_audit_v1') || '[]');
 let profile = JSON.parse(localStorage.getItem('tna_profile_v1') || '{}');
 let editingNoteId = null;
+let users = JSON.parse(localStorage.getItem('tna_users_v1') || '[]');
 
 // DOM elements
 const els = {};
 ['notesGrid','noteCount','modalBackdrop','createNoteBtn','saveNote','cancelNote',
  'searchInput','statusFilter','priorityFilter','categoryFilter','showing','auditLog',
  'saveProfile','clearProfile','roleSelect','displayName','gphc','avatar','userName',
- 'userRole','exportBtn','importBtn','importFile','clearLog','clearAllBtn',
- 'noteCategory','notePriority','notePatientRef','noteMessage','modalTitle'
+ 'userRole','clearLog','clearAllBtn',
+ 'noteCategory','notePriority','notePatientRef','noteMessage','modalTitle',
+ 'userSwitch'
 ].forEach(id => els[id] = document.getElementById(id));
 
 // Utilities
@@ -21,6 +23,7 @@ const escapeHtml = s => s ? s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace
 // Initialize
 function init() {
     bindEvents();
+    loadUsersToDropdown();
     loadProfileToUI();
     renderNotes();
     renderAudit();
@@ -37,11 +40,9 @@ function bindEvents() {
     els.categoryFilter.addEventListener('change', renderNotes);
     els.saveProfile.addEventListener('click', saveProfile);
     els.clearProfile.addEventListener('click', resetProfile);
-    els.exportBtn.addEventListener('click', exportJSON);
-    els.importBtn.addEventListener('click', () => els.importFile.click());
-    els.importFile.addEventListener('change', handleImportFile);
     els.clearLog.addEventListener('click', clearAudit);
     els.clearAllBtn.addEventListener('click', clearAllNotes);
+    els.userSwitch.addEventListener('change', switchUser);
 }
 
 // Profile functions
@@ -52,6 +53,15 @@ function saveProfile() {
         gphc: els.gphc.value || ''
     };
     localStorage.setItem('tna_profile_v1', JSON.stringify(profile));
+    // Save/update user in users list
+    const idx = users.findIndex(u => u.name === profile.name);
+    if (idx >= 0) {
+        users[idx] = profile;
+    } else {
+        users.push(profile);
+    }
+    localStorage.setItem('tna_users_v1', JSON.stringify(users));
+    loadUsersToDropdown();
     loadProfileToUI();
     pushAudit('Profile saved');
 }
@@ -70,6 +80,33 @@ function loadProfileToUI() {
     els.avatar.textContent = (profile.name || 'Guest').split(' ')[0].charAt(0) || 'U';
     els.userName.textContent = profile.name || 'Guest';
     els.userRole.textContent = profile.role ? profile.role.charAt(0).toUpperCase() + profile.role.slice(1) : 'No role selected';
+}
+
+function loadUsersToDropdown() {
+    // Clear and repopulate userSwitch dropdown
+    els.userSwitch.innerHTML = '<option value="">Select user...</option>';
+    users.forEach(u => {
+        const opt = document.createElement('option');
+        opt.value = u.name;
+        opt.textContent = u.name + (u.role ? ' (' + u.role + ')' : '');
+        els.userSwitch.appendChild(opt);
+    });
+    // Set selected to current profile if exists
+    if (profile && profile.name) {
+        els.userSwitch.value = profile.name;
+    }
+}
+
+function switchUser() {
+    const selected = els.userSwitch.value;
+    if (!selected) return;
+    const user = users.find(u => u.name === selected);
+    if (user) {
+        profile = {...user};
+        localStorage.setItem('tna_profile_v1', JSON.stringify(profile));
+        loadProfileToUI();
+        pushAudit('Switched to user ' + user.name);
+    }
 }
 
 // Modal functions
@@ -246,44 +283,6 @@ function clearAudit() {
         renderAudit();
         pushAudit('Cleared audit log');
     }
-}
-
-// Export/Import
-function exportJSON() {
-    const payload = { notes, audit, profile, exportedAt: nowISO() };
-    const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'tna-export-' + new Date().toISOString().slice(0, 10) + '.json';
-    a.click();
-    URL.revokeObjectURL(url);
-}
-
-function handleImportFile(e) {
-    const file = e.target.files[0];
-    if (!file) return;
-    
-    const reader = new FileReader();
-    reader.onload = () => {
-        try {
-            const data = JSON.parse(reader.result);
-            if (data.notes) notes = data.notes;
-            if (data.audit) audit = data.audit;
-            if (data.profile) profile = data.profile;
-            
-            persistNotes();
-            localStorage.setItem('tna_audit_v1', JSON.stringify(audit));
-            localStorage.setItem('tna_profile_v1', JSON.stringify(profile));
-            loadProfileToUI();
-            renderNotes();
-            renderAudit();
-            alert('Import complete');
-        } catch (err) {
-            alert('Invalid file');
-        }
-    };
-    reader.readAsText(file);
 }
 
 function clearAllNotes() {

@@ -15,16 +15,18 @@
         <div class="subtitle">Pharmacy-focused digital handover</div>
       </div>
     </div>
-    <div>
-      <button id="exportBtn" class="btn ghost">Export JSON</button>
-      <button id="importBtn" class="btn ghost">Import JSON</button>
-      <input type="file" id="importFile" accept="application/json">
-    </div>
   </header>
 
   <main class="container">
     <div class="grid">
       <aside class="card sidebar">
+        <div style="margin-bottom: 16px;">
+          <label>Switch user</label>
+          <select id="userSwitch">
+            <option value="">Select user...</option>
+          </select>
+        </div>
+
         <div class="profile">
           <div class="avatar" id="avatar">U</div>
           <div>
