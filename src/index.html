@@ -20,11 +20,14 @@
   <main class="container">
     <div class="grid">
       <aside class="card sidebar">
-        <div style="margin-bottom: 16px;">
-          <label>Switch user</label>
-          <select id="userSwitch">
-            <option value="">Select user...</option>
-          </select>
+        <div style="margin-bottom: 16px; display: flex; align-items: flex-end; gap: 8px;">
+          <div style="flex:1">
+            <label>Switch user</label>
+            <select id="userSwitch">
+              <option value="">Select user...</option>
+            </select>
+          </div>
+          <button id="removeUserBtn" class="btn ghost" style="height:32px;">Remove</button>
         </div>
 
         <div class="profile">

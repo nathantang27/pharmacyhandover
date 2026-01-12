@@ -12,7 +12,7 @@ const els = {};
  'saveProfile','clearProfile','roleSelect','displayName','gphc','avatar','userName',
  'userRole','clearLog','clearAllBtn',
  'noteCategory','notePriority','notePatientRef','noteMessage','modalTitle',
- 'userSwitch'
+ 'userSwitch', 'removeUserBtn'
 ].forEach(id => els[id] = document.getElementById(id));
 
 // Utilities
@@ -43,6 +43,7 @@ function bindEvents() {
     els.clearLog.addEventListener('click', clearAudit);
     els.clearAllBtn.addEventListener('click', clearAllNotes);
     els.userSwitch.addEventListener('change', switchUser);
+    els.removeUserBtn.addEventListener('click', removeUser);
 }
 
 // Profile functions
@@ -107,6 +108,24 @@ function switchUser() {
         loadProfileToUI();
         pushAudit('Switched to user ' + user.name);
     }
+}
+
+function removeUser() {
+    const selected = els.userSwitch.value;
+    if (!selected) return;
+    if (!confirm('Remove user "' + selected + '"? This cannot be undone.')) return;
+    users = users.filter(u => u.name !== selected);
+    localStorage.setItem('tna_users_v1', JSON.stringify(users));
+    // If the removed user is the current profile, reset profile
+    if (profile && profile.name === selected) {
+        profile = {};
+        localStorage.removeItem('tna_profile_v1');
+        loadProfileToUI();
+        pushAudit('Removed user ' + selected + ' and reset profile');
+    } else {
+        pushAudit('Removed user ' + selected);
+    }
+    loadUsersToDropdown();
 }
 
 // Modal functions
